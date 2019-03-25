@@ -33,3 +33,10 @@ button {
   display: flex;
   padding: 0px 8px;
 }
+
+@media screen and (max-width: 670px) {
+  .card {
+    margin-bottom: 2em;
+    width: 80%;
+  }
+}
