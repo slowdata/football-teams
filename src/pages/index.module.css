@@ -1,0 +1,11 @@
+.title {
+  margin: 1.2em auto;
+  max-width: 50%;
+  text-align: center;
+}
+
+.container {
+  margin: 5em 2em;
+  display: flex;
+  justify-content: space-evenly;
+}
