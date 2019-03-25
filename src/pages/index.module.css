@@ -38,6 +38,10 @@
   .msgError,
   .msgOk {
     max-width: 80%;
-    margin: 2em 20%;
+    margin: 2em 10%;
+  }
+  .title {
+    margin: 1em 2em;
+    max-width: 100%;
   }
 }

@@ -37,6 +37,6 @@ button {
 @media screen and (max-width: 670px) {
   .card {
     margin-bottom: 2em;
-    width: 80%;
+    width: 90%;
   }
 }
