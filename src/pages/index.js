@@ -12,6 +12,7 @@ class Index extends Component {
     team2: [],
     error: 0,
     msg: "",
+    teamsURI: "",
   }
 
   handleInputChange = e => {
@@ -94,8 +95,38 @@ class Index extends Component {
     }
   }
 
+  creatURI = () => {
+    const team1Params = this.state.team1.map(player => {
+      return Object.keys(player).map(key => `${key}=${player[key]}`)
+    })
+    const team2Params = this.state.team2.map(player => {
+      return Object.keys(player).map(key => `${key}=${player[key]}`)
+    })
+
+    const paramsURI = `team1=${encodeURIComponent(
+      team1Params
+    )}&team2=${encodeURIComponent(team2Params)}`
+
+    const {
+      location: { href },
+    } = this.props
+
+    const teamsURI = `${href}?${paramsURI}`
+    return teamsURI
+  }
+
+  handleClick = () => {
+    this.teamsURI.select()
+    document.execCommand("copy")
+    console.log(this.teamsURI.value)
+  }
+
   render() {
+    //const params = this.props.location.search
+    //const teams = JSON.parse(params.replace("?", ""))
+
     const { team1, team2, name, error, msg } = this.state
+
     return (
       <>
         <h2 className={styles.title}>O Tiago manda fazer as equipas!</h2>
@@ -103,7 +134,9 @@ class Index extends Component {
           name={name}
           handleChange={this.handleInputChange}
           handleSubmit={this.addPlayer}
-        />
+        >
+          Adicionar
+        </Input>
         <div className={styles.container}>
           <Team
             number={1}
@@ -121,14 +154,22 @@ class Index extends Component {
         {error > 0 &&
           (error > 1 ? (
             <div className={styles.msgOk}>
-              {msg} 
+              {msg}
               <span role="img" aria-label="blink with thung emoji">
                 😜
               </span>
+              <div className={styles.teamsURI}>
+                <input
+                  readOnly
+                  value={this.creatURI()}
+                  ref={_teamsURI => (this.teamsURI = _teamsURI)}
+                />
+                <button onClick={this.handleClick}>Copiar</button>
+              </div>
             </div>
           ) : (
             <div className={styles.msgError}>
-              {msg} 
+              {msg}
               <span role="img" aria-label="blink with thung emoji">
                 😜
               </span>

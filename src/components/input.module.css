@@ -28,8 +28,7 @@ button {
   background-color: white;
 }
 
-button:hover,
-button:focus {
+button:hover {
   background: #333333;
   color: white;
 }

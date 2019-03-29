@@ -11,8 +11,10 @@ const Team = ({ number, players, deletePlayer, switchPlayer }) => (
           return number === 1 ? (
             <li key={player.id}>
               {player.name}
-              <button onClick={() => deletePlayer(player.id)}>X</button>
-              <button onClick={() => switchPlayer(player.id)}>{"->"}</button>
+              <div className={styles.listButtons}>
+                <button onClick={() => deletePlayer(player.id)}>X</button>
+                <button onClick={() => switchPlayer(player.id)}>{"->"}</button>
+              </div>{" "}
             </li>
           ) : (
             <li key={player.id}>

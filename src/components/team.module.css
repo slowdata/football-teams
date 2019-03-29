@@ -23,14 +23,14 @@ ul {
 }
 
 li {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
   text-transform: capitalize;
 }
 
-button {
+.listButtons {
   display: flex;
+}
+
+button {
   padding: 0px 8px;
 }
 

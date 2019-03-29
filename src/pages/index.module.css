@@ -11,7 +11,7 @@
 }
 
 .msgError {
-  max-width: 50%;
+  max-width: 70%;
   margin: 0 auto;
   text-align: center;
   padding: 1em;
@@ -20,13 +20,37 @@
 }
 
 .msgOk {
-  max-width: 50%;
+  max-width: 70%;
   margin: 0 auto;
   text-align: center;
   padding: 1em;
   border-radius: 5px;
   background-color: rgba(0, 200, 0, 0.2);
 }
+
+.teamsURI {
+  border: solid 1px gainsboro;
+  margin: 1.2em 0;
+  width: 100%;
+  border-radius: 5px;
+  display: flex;
+}
+
+.teamsURI input {
+  display: flex;
+  flex: 1;
+  border: none;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.teamsURI button {
+  border-radius: 0px 5px 5px 0px;
+  border: none;
+  border-left: solid 1px gainsboro;
+}
+
 /* f08080 */
 
 @media screen and (max-width: 670px) {

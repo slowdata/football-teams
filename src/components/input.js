@@ -2,7 +2,7 @@ import React from "react"
 
 import styles from "./input.module.css"
 
-const Input = ({ name, handleChange, handleSubmit }) => (
+const Input = ({ name, handleChange, handleSubmit, children }) => (
   <form className={styles.playerInput} onSubmit={handleSubmit}>
     <input
       type="text"
@@ -10,7 +10,7 @@ const Input = ({ name, handleChange, handleSubmit }) => (
       onChange={handleChange}
       placeholder="Adicione um jogador"
     />
-    <button type="submit">Adicionar</button>
+    <button type="submit">{children}</button>
   </form>
 )
 
