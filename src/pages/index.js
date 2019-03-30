@@ -96,35 +96,58 @@ class Index extends Component {
   }
 
   creatURI = () => {
-    const team1Params = this.state.team1.map(player => {
-      return Object.keys(player).map(key => `${key}=${player[key]}`)
-    })
-    const team2Params = this.state.team2.map(player => {
-      return Object.keys(player).map(key => `${key}=${player[key]}`)
-    })
+    const team1Params = `team1=${encodeURIComponent(
+      JSON.stringify(this.state.team1)
+    )}`
+    const team2Params = `team2=${encodeURIComponent(
+      JSON.stringify(this.state.team2)
+    )}`
 
-    const paramsURI = `team1=${encodeURIComponent(
-      team1Params
-    )}&team2=${encodeURIComponent(team2Params)}`
+    const paramsURI = `${team1Params}&${team2Params}`
 
     const {
       location: { href },
     } = this.props
 
     const teamsURI = `${href}?${paramsURI}`
+
     return teamsURI
   }
 
   handleClick = () => {
     this.teamsURI.select()
     document.execCommand("copy")
-    console.log(this.teamsURI.value)
+  }
+
+  componentDidMount = () => {
+    const {
+      location: { search },
+    } = this.props
+
+    if (search) {
+      const teams = search.replace("?", "").split("&")
+      const t1 = decodeURIComponent(teams[0])
+      const t2 = decodeURIComponent(teams[1])
+
+      const team1 = JSON.parse(
+        t1.substr(t1.split("=")[0].length + 1, t1.length)
+      )
+
+      const team2 = JSON.parse(
+        t2.substr(t2.split("=")[0].length + 1, t2.length)
+      )
+
+      if (team1.length === 7 && team2.length === 7) {
+        const error = 2
+        const msg = "Conseguiste!! O Tiago vai ficar orgulhoso"
+        this.setState({ team1, team2, error, msg })
+      } else {
+        this.setState({ team1, team2 })
+      }
+    }
   }
 
   render() {
-    //const params = this.props.location.search
-    //const teams = JSON.parse(params.replace("?", ""))
-
     const { team1, team2, name, error, msg } = this.state
 
     return (
@@ -181,5 +204,3 @@ class Index extends Component {
 }
 
 export default Index
-
-// const players = ["joao", "ricardo", "pedro", "hugo"]

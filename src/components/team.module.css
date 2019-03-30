@@ -24,6 +24,8 @@ ul {
 
 li {
   text-transform: capitalize;
+  display: flex;
+  justify-content: space-between;
 }
 
 .listButtons {
@@ -32,6 +34,11 @@ li {
 
 button {
   padding: 0px 8px;
+  margin: 0 3px;
+}
+
+.removeButton {
+  background-color: lightcoral;
 }
 
 @media screen and (max-width: 670px) {
