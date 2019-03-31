@@ -34,6 +34,7 @@ class Index extends Component {
           msg = "Conseguiste!! O Tiago vai ficar orgulhoso"
         }
         this.setState({ team1: newTeam, name: "", error, msg })
+        this.creatURI()
       } else if (team2.length < 7) {
         const player = { name, id: Date.now() }
         const newTeam = team2.concat([player])
@@ -42,11 +43,13 @@ class Index extends Component {
           msg = "Conseguiste!! O Tiago vai ficar orgulhoso"
         }
         this.setState({ team2: newTeam, name: "", error, msg })
+        this.creatURI()
       } else {
         this.setState({
           error: 2,
           msg: "Conseguiste!! O Tiago vai ficar orgulhoso",
         })
+        this.creatURI()
       }
     }
   }
@@ -82,6 +85,7 @@ class Index extends Component {
         team1[index] = p2
         team2[index] = p1
         this.setState({ team1, team2 })
+        this.creatURI()
       }
     } else {
       const index = team2.findIndex(player => player.id === id)
@@ -91,6 +95,7 @@ class Index extends Component {
         team1[index] = p2
         team2[index] = p1
         this.setState({ team1, team2 })
+        this.creatURI()
       }
     }
   }
@@ -111,7 +116,7 @@ class Index extends Component {
 
     const teamsURI = `${href}?${paramsURI}`
 
-    return teamsURI
+    this.setState({ teamsURI })
   }
 
   handleClick = () => {
@@ -148,7 +153,7 @@ class Index extends Component {
   }
 
   render() {
-    const { team1, team2, name, error, msg } = this.state
+    const { team1, team2, name, error, msg, teamsURI } = this.state
 
     return (
       <>
@@ -184,7 +189,7 @@ class Index extends Component {
               <div className={styles.teamsURI}>
                 <input
                   readOnly
-                  value={this.creatURI()}
+                  value={teamsURI}
                   ref={_teamsURI => (this.teamsURI = _teamsURI)}
                 />
                 <button onClick={this.handleClick}>Copiar</button>
