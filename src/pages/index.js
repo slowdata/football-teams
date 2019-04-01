@@ -13,6 +13,7 @@ class Index extends Component {
     error: 0,
     msg: "",
     teamsURI: "",
+    origin: "",
   }
 
   handleInputChange = e => {
@@ -22,7 +23,7 @@ class Index extends Component {
 
   addPlayer = e => {
     e.preventDefault()
-    const { team1, team2, name } = this.state
+    const { team1, team2, name, origin } = this.state
     let msg = "Estás no bom caminho!! Mas ainda falta."
     let error = 1
     if (name) {
@@ -33,8 +34,10 @@ class Index extends Component {
           error = 2
           msg = "Conseguiste!! O Tiago vai ficar orgulhoso"
         }
-        this.setState({ team1: newTeam, name: "", error, msg })
-        this.creatURI()
+        this.setState(prevState => {
+          const teamsURI = createURI(newTeam, prevState.team2, origin)
+          return { team1: newTeam, name: "", error, msg, teamsURI }
+        })
       } else if (team2.length < 7) {
         const player = { name, id: Date.now() }
         const newTeam = team2.concat([player])
@@ -42,33 +45,40 @@ class Index extends Component {
           error = 2
           msg = "Conseguiste!! O Tiago vai ficar orgulhoso"
         }
-        this.setState({ team2: newTeam, name: "", error, msg })
-        this.creatURI()
+        this.setState(prevState => {
+          const teamsURI = createURI(prevState.team1, newTeam, origin)
+          return { team2: newTeam, name: "", error, msg, teamsURI }
+        })
       } else {
         this.setState({
           error: 2,
           msg: "Conseguiste!! O Tiago vai ficar orgulhoso",
         })
-        this.creatURI()
       }
     }
   }
 
   handleDelete = id => {
-    const { team1, team2 } = this.state
+    const { team1, team2, origin } = this.state
     let player = team1.find(player => player.id === id)
     let msg = "Estás no bom caminho!! Mas ainda falta."
     let error = 0
     if (player) {
       const team = team1.filter(player => player.id !== id)
       if (team.length > 0) error = 1
-      this.setState({ team1: team, error, msg })
+      this.setState(prevState => {
+        const teamsURI = createURI(team, prevState.team2, origin)
+        return { team1: team, error, msg, teamsURI }
+      })
     } else {
       player = team2.find(player => player.id === id)
       if (player) {
         const team = team2.filter(player => player.id !== id)
         if (team.length > 0) error = 1
-        this.setState({ team2: team, error, msg })
+        this.setState(prevState => {
+          const teamsURI = createURI(prevState.team1, team, origin)
+          return { team2: team, error, msg, teamsURI }
+        })
       } else {
         this.setState({ error })
       }
@@ -76,7 +86,7 @@ class Index extends Component {
   }
 
   handleSwitchPlayer = id => {
-    const { team1, team2 } = this.state
+    const { team1, team2, origin } = this.state
     const index = team1.findIndex(player => player.id === id)
     if (index > -1) {
       const p1 = team1[index]
@@ -84,8 +94,6 @@ class Index extends Component {
       if (p2) {
         team1[index] = p2
         team2[index] = p1
-        this.setState({ team1, team2 })
-        this.creatURI()
       }
     } else {
       const index = team2.findIndex(player => player.id === id)
@@ -94,29 +102,10 @@ class Index extends Component {
       if (p1) {
         team1[index] = p2
         team2[index] = p1
-        this.setState({ team1, team2 })
-        this.creatURI()
       }
     }
-  }
-
-  creatURI = () => {
-    const team1Params = `team1=${encodeURIComponent(
-      JSON.stringify(this.state.team1)
-    )}`
-    const team2Params = `team2=${encodeURIComponent(
-      JSON.stringify(this.state.team2)
-    )}`
-
-    const paramsURI = `${team1Params}&${team2Params}`
-
-    const {
-      location: { href },
-    } = this.props
-
-    const teamsURI = `${href}?${paramsURI}`
-
-    this.setState({ teamsURI })
+    const teamsURI = createURI(team1, team2, origin)
+    this.setState({ team1, team2, teamsURI })
   }
 
   handleClick = () => {
@@ -126,8 +115,10 @@ class Index extends Component {
 
   componentDidMount = () => {
     const {
-      location: { search },
+      location: { search, origin },
     } = this.props
+
+    this.setState({ origin })
 
     if (search) {
       const teams = search.replace("?", "").split("&")
@@ -142,12 +133,14 @@ class Index extends Component {
         t2.substr(t2.split("=")[0].length + 1, t2.length)
       )
 
+      const teamsURI = createURI(team1, team2, origin)
+
       if (team1.length === 7 && team2.length === 7) {
         const error = 2
         const msg = "Conseguiste!! O Tiago vai ficar orgulhoso"
-        this.setState({ team1, team2, error, msg })
+        this.setState({ team1, team2, error, msg, teamsURI })
       } else {
-        this.setState({ team1, team2 })
+        this.setState({ team1, team2, teamsURI })
       }
     }
   }
@@ -209,3 +202,14 @@ class Index extends Component {
 }
 
 export default Index
+
+const createURI = (team1, team2, origin) => {
+  const team1Params = `team1=${encodeURIComponent(JSON.stringify(team1))}`
+  const team2Params = `team2=${encodeURIComponent(JSON.stringify(team2))}`
+
+  const paramsURI = `${team1Params}&${team2Params}`
+
+  const teamsURI = `${origin}/?${paramsURI}`
+
+  return teamsURI
+}
