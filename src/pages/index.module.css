@@ -1,7 +1,12 @@
+body {
+  background: white;
+}
+
 .title {
   margin: 1.2em auto;
   max-width: 50%;
   text-align: center;
+  color: whitesmoke;
 }
 
 .container {
@@ -23,14 +28,14 @@
   max-width: 70%;
   margin: 0 auto;
   text-align: center;
-  padding: 1em;
+  padding: 0.4em;
   border-radius: 5px;
   background-color: rgba(0, 200, 0, 0.2);
 }
 
 .teamsURI {
   border: solid 1px gainsboro;
-  margin: 1.2em 0;
+  margin: 1em 0 0 0;
   width: 100%;
   border-radius: 5px;
   display: flex;
@@ -49,6 +54,7 @@
   border-radius: 0px 5px 5px 0px;
   border: none;
   border-left: solid 1px gainsboro;
+  margin: 0px;
 }
 
 /* f08080 */
